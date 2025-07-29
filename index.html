@@ -1,0 +1,3319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Developer Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://unpkg.com/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+
+      :root {
+        --primary-dark: #0f172a;
+        --secondary-dark: #1e293b;
+        --accent-dark: #38bdf8;
+        --text-dark: #f8fafc;
+
+        --primary-light: #f8fafc;
+        --secondary-light: #e2e8f0;
+        --accent-light: #0284c7;
+        --text-light: #0f172a;
+      }
+
+      .dark {
+        --bg-primary: var(--primary-dark);
+        --bg-secondary: var(--secondary-dark);
+        --accent: var(--accent-dark);
+        --text: var(--text-dark);
+      }
+
+      .light {
+        --bg-primary: var(--primary-light);
+        --bg-secondary: var(--secondary-light);
+        --accent: var(--accent-light);
+        --text: var(--text-light);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Space Grotesk", sans-serif;
+        background-color: var(--bg-primary);
+        color: var(--text);
+        transition: all 0.5s ease;
+        overflow-x: hidden;
+      }
+
+      .cursor-follow {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--accent);
+        border-radius: 50%;
+        position: fixed;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 9999;
+        transition: all 0.1s ease;
+        opacity: 0.7;
+      }
+
+      .cursor-dot {
+        width: 6px;
+        height: 6px;
+        background-color: var(--accent);
+        border-radius: 50%;
+        position: fixed;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 9999;
+        transition: all 0.05s ease;
+      }
+
+      .nav-link {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--accent);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .project-card {
+        background-color: var(--bg-secondary);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.5s ease;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+      }
+
+      .project-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent);
+      }
+
+      .skill-pill {
+        background-color: var(--bg-secondary);
+        color: var(--text);
+        border: 1px solid var(--accent);
+        transition: all 0.3s ease;
+      }
+
+      .skill-pill:hover {
+        background-color: var(--accent);
+        color: var(--bg-primary);
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .glitch-effect {
+        position: relative;
+      }
+
+      .glitch-effect::before,
+      .glitch-effect::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .glitch-effect::before {
+        left: 2px;
+        text-shadow: -1px 0 var(--accent);
+        clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim 5s infinite linear alternate-reverse;
+      }
+
+      .glitch-effect::after {
+        left: -2px;
+        text-shadow: -1px 0 var(--accent);
+        clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim2 5s infinite linear alternate-reverse;
+      }
+
+      @keyframes glitch-anim {
+        0% {
+          clip: rect(31px, 9999px, 94px, 0);
+        }
+        10% {
+          clip: rect(112px, 9999px, 76px, 0);
+        }
+        20% {
+          clip: rect(85px, 9999px, 77px, 0);
+        }
+        30% {
+          clip: rect(27px, 9999px, 97px, 0);
+        }
+        40% {
+          clip: rect(64px, 9999px, 98px, 0);
+        }
+        50% {
+          clip: rect(61px, 9999px, 85px, 0);
+        }
+        60% {
+          clip: rect(99px, 9999px, 114px, 0);
+        }
+        70% {
+          clip: rect(34px, 9999px, 115px, 0);
+        }
+        80% {
+          clip: rect(98px, 9999px, 129px, 0);
+        }
+        90% {
+          clip: rect(43px, 9999px, 96px, 0);
+        }
+        100% {
+          clip: rect(82px, 9999px, 64px, 0);
+        }
+      }
+
+      @keyframes glitch-anim2 {
+        0% {
+          clip: rect(125px, 9999px, 162px, 0);
+        }
+        10% {
+          clip: rect(120px, 9999px, 147px, 0);
+        }
+        20% {
+          clip: rect(113px, 9999px, 142px, 0);
+        }
+        30% {
+          clip: rect(142px, 9999px, 115px, 0);
+        }
+        40% {
+          clip: rect(121px, 9999px, 112px, 0);
+        }
+        50% {
+          clip: rect(146px, 9999px, 162px, 0);
+        }
+        60% {
+          clip: rect(131px, 9999px, 161px, 0);
+        }
+        70% {
+          clip: rect(141px, 9999px, 154px, 0);
+        }
+        80% {
+          clip: rect(148px, 9999px, 153px, 0);
+        }
+        90% {
+          clip: rect(141px, 9999px, 102px, 0);
+        }
+        100% {
+          clip: rect(137px, 9999px, 123px, 0);
+        }
+      }
+
+      .grid-bg {
+        background-image: radial-gradient(var(--accent) 1px, transparent 1px);
+        background-size: 30px 30px;
+        opacity: 0.1;
+      }
+
+      .contact-input {
+        background-color: var(--bg-secondary);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text);
+        transition: all 0.3s ease;
+      }
+
+      .contact-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        outline: none;
+      }
+
+      .btn-primary {
+        background-color: var(--accent);
+        color: var(--bg-primary);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-primary::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: all 0.6s ease;
+      }
+
+      .btn-primary:hover::before {
+        left: 100%;
+      }
+
+      .progress-bar {
+        height: 4px;
+        background-color: var(--accent);
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        transition: width 0.2s ease;
+      }
+
+      .theme-switch {
+        position: relative;
+        width: 60px;
+        height: 30px;
+        background-color: var(--bg-secondary);
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .theme-switch::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 24px;
+        height: 24px;
+        background-color: var(--accent);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+      }
+
+      .light .theme-switch::after {
+        transform: translateX(30px);
+      }
+
+      .animated-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.1;
+      }
+
+      .particle {
+        position: absolute;
+        border-radius: 50%;
+        background-color: var(--accent);
+        animation: float 15s infinite linear;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0) rotate(0deg);
+        }
+        100% {
+          transform: translateY(-100vh) rotate(360deg);
+        }
+      }
+
+      .scroll-indicator {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 50;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .scroll-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: var(--bg-secondary);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .scroll-dot.active {
+        background-color: var(--accent);
+        transform: scale(1.5);
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 1s ease;
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .reveal-left {
+        opacity: 0;
+        transform: translateX(-50px);
+        transition: all 1s ease;
+      }
+
+      .reveal-right {
+        opacity: 0;
+        transform: translateX(50px);
+        transition: all 1s ease;
+      }
+
+      .reveal-left.active,
+      .reveal-right.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .magnetic-button {
+        position: relative;
+        transition: transform 0.3s ease;
+      }
+
+      .parallax-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+
+      .parallax-item {
+        position: absolute;
+        border-radius: 50%;
+        background-color: var(--accent);
+        opacity: 0.1;
+      }
+
+      .loader-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--bg-primary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+      }
+
+      .page-transition {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--accent);
+        z-index: 9998;
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: transform 0.5s ease;
+      }
+
+      .skill-bar {
+        position: relative;
+        height: 8px;
+        background-color: var(--bg-secondary);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .skill-progress {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        background-color: var(--accent);
+        width: 0;
+        transition: width 1.5s ease;
+        border-radius: 4px;
+      }
+
+      .text-gradient {
+        background: linear-gradient(90deg, #38bdf8, #818cf8);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .hover-card {
+        transition: all 0.3s ease;
+      }
+
+      .hover-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .scroll-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+
+      .sticky-header {
+        transition: all 0.3s ease;
+      }
+
+      .sticky-header.scrolled {
+        background-color: var(--bg-primary);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .horizontal-scroll-section {
+        height: 100vh;
+        width: 100%;
+        position: relative;
+        overflow: visible;
+      }
+
+      .horizontal-scroll-container {
+        height: 100%;
+        display: flex;
+        position: absolute;
+        transition: transform 0.5s ease;
+      }
+
+      .horizontal-scroll-panel {
+        height: 100%;
+        width: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .magnetic-area {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .magnetic-item {
+        position: absolute;
+        border-radius: 50%;
+        background-color: var(--accent);
+        opacity: 0.1;
+        transition: transform 0.3s ease;
+      }
+
+      /* Ripple Effect Styles */
+      .ripple-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 0;
+      }
+
+      .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(56, 189, 248, 0.2) 0%,
+          rgba(56, 189, 248, 0) 70%
+        );
+        transform: scale(0);
+        opacity: 1;
+        animation: ripple-animation 3s ease-out;
+      }
+
+      @keyframes ripple-animation {
+        0% {
+          transform: scale(0);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0;
+        }
+      }
+
+      /* Enhanced Marquee Styles */
+      .marquee-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        padding: 2rem 0;
+        transform: rotate(-2deg);
+        z-index: 10;
+      }
+
+      .marquee-track {
+        display: flex;
+        animation: marquee-scroll 20s linear infinite;
+        white-space: nowrap;
+      }
+
+      .marquee-content {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+      }
+
+      .marquee-item {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 2rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        position: relative;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+      }
+
+      .marquee-text {
+        font-size: 4rem;
+        letter-spacing: -1px;
+        position: relative;
+        transform-style: preserve-3d;
+        animation: marquee-float 5s ease-in-out infinite alternate;
+      }
+
+      .marquee-text-outline {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        color: transparent;
+        -webkit-text-stroke: 1px var(--accent);
+        opacity: 0.5;
+        transform: translateZ(-10px);
+      }
+
+      .marquee-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: var(--accent);
+        margin: 0 1.5rem;
+        opacity: 0.7;
+      }
+
+      @keyframes marquee-scroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      @keyframes marquee-float {
+        0%,
+        100% {
+          transform: translateY(0) rotateX(0deg);
+        }
+        50% {
+          transform: translateY(-10px) rotateX(5deg);
+        }
+      }
+
+      /* Canvas for ripple effect */
+      #ripple-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+
+      /* Terminal Industries inspired styles */
+      .terminal-grid {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(var(--accent) 1px, transparent 1px),
+          linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+        background-size: 40px 40px;
+        opacity: 0.05;
+        z-index: -1;
+      }
+
+      .terminal-footer-bg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          ellipse at bottom,
+          var(--accent) 0%,
+          transparent 70%
+        );
+        opacity: 0.1;
+        z-index: -1;
+      }
+
+      .scroll-animation-container {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .scroll-animation-item {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      .scroll-animation-item.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .stagger-item {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      .stagger-item.active {
+        opacity: 1;
+        transform: translateY(0);
+        transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      .split-text-container {
+        overflow: hidden;
+      }
+
+      .split-text {
+        display: inline-block;
+        transform: translateY(100%);
+        transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      .split-text.active {
+        transform: translateY(0);
+      }
+
+      .parallax-scroll {
+        will-change: transform;
+      }
+
+      .terminal-section {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .terminal-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, transparent, var(--bg-primary));
+        opacity: 0.8;
+        z-index: -1;
+      }
+
+      .terminal-glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        z-index: -1;
+      }
+
+      .terminal-glow-1 {
+        top: -20%;
+        left: -10%;
+        width: 40%;
+        height: 40%;
+        background-color: var(--accent);
+        opacity: 0.15;
+      }
+
+      .terminal-glow-2 {
+        bottom: -20%;
+        right: -10%;
+        width: 50%;
+        height: 50%;
+        background-color: var(--accent);
+        opacity: 0.1;
+      }
+
+      .terminal-card {
+        backdrop-filter: blur(10px);
+        background-color: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.5s ease;
+      }
+
+      .terminal-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent);
+      }
+
+      .terminal-text-reveal {
+        overflow: hidden;
+      }
+
+      .terminal-text-reveal span {
+        display: inline-block;
+        transform: translateY(100%);
+        opacity: 0;
+        transition: transform 0.5s ease, opacity 0.5s ease;
+      }
+
+      .terminal-text-reveal.active span {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .terminal-text-reveal span:nth-child(1) {
+        transition-delay: 0.1s;
+      }
+      .terminal-text-reveal span:nth-child(2) {
+        transition-delay: 0.2s;
+      }
+      .terminal-text-reveal span:nth-child(3) {
+        transition-delay: 0.3s;
+      }
+      .terminal-text-reveal span:nth-child(4) {
+        transition-delay: 0.4s;
+      }
+      .terminal-text-reveal span:nth-child(5) {
+        transition-delay: 0.5s;
+      }
+
+      .scroll-scale {
+        transform: scale(0.8);
+        opacity: 0;
+        transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      .scroll-scale.active {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      .scroll-rotate {
+        transform: rotate(-10deg) scale(0.8);
+        opacity: 0;
+        transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      .scroll-rotate.active {
+        transform: rotate(0) scale(1);
+        opacity: 1;
+      }
+
+      .terminal-line {
+        width: 0;
+        height: 1px;
+        background-color: var(--accent);
+        transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      .terminal-line.active {
+        width: 100%;
+      }
+
+      .terminal-counter {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      .terminal-counter.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .terminal-blur-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(100px);
+        z-index: -1;
+        opacity: 0.1;
+      }
+
+      .terminal-noise {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        opacity: 0.05;
+        z-index: -1;
+      }
+
+      /* WebGL Distortion Effect - Full Width Background */
+      #webgl-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+
+      .webgl-container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .webgl-text-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        text-align: center;
+        width: 100%;
+        pointer-events: none;
+      }
+
+      .webgl-text {
+        font-size: 8rem;
+        font-weight: 700;
+        letter-spacing: -2px;
+        line-height: 1;
+        margin: 0;
+        color: var(--text);
+        mix-blend-mode: difference;
+      }
+
+      .webgl-subtitle {
+        font-size: 2rem;
+        font-weight: 400;
+        margin-top: 1rem;
+        color: var(--accent);
+        opacity: 0.8;
+      }
+
+      .webgl-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at center,
+          transparent 30%,
+          var(--bg-primary) 80%
+        );
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      /* Fix for horizontal scroll section */
+      .projects-wrapper {
+        position: relative;
+        height: 100vh;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      /* Enhanced Futuristic Loader Styles */
+      .futuristic-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--bg-primary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        overflow: hidden;
+      }
+
+      .loader-grid {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(
+            var(--accent) 0.5px,
+            transparent 0.5px
+          ),
+          linear-gradient(90deg, var(--accent) 0.5px, transparent 0.5px);
+        background-size: 50px 50px;
+        opacity: 0.05;
+      }
+
+      .loader-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .loader-name-container {
+        position: relative;
+        height: 200px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 2rem;
+        perspective: 1000px;
+      }
+
+      .loader-letter {
+        position: absolute;
+        font-size: 8rem;
+        font-weight: 700;
+        color: var(--text);
+        opacity: 0;
+        transform-style: preserve-3d;
+        will-change: transform, opacity;
+      }
+
+      .loader-progress {
+        width: 300px;
+        height: 4px;
+        background-color: var(--bg-secondary);
+        border-radius: 2px;
+        overflow: hidden;
+        margin: 0 auto;
+      }
+
+      .loader-progress-bar {
+        height: 100%;
+        width: 0;
+        background-color: var(--accent);
+        transition: width 0.5s ease;
+      }
+
+      .loader-status {
+        margin-top: 1rem;
+        font-size: 1rem;
+        color: var(--accent);
+        opacity: 0.8;
+      }
+
+      .loader-glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+      }
+
+      .loader-glow-1 {
+        top: 30%;
+        left: 20%;
+        width: 300px;
+        height: 300px;
+        background-color: var(--accent);
+        opacity: 0.1;
+      }
+
+      .loader-glow-2 {
+        bottom: 20%;
+        right: 10%;
+        width: 400px;
+        height: 400px;
+        background-color: var(--accent);
+        opacity: 0.15;
+      }
+
+      .loader-particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .loader-particle {
+        position: absolute;
+        background-color: var(--accent);
+        border-radius: 50%;
+        opacity: 0.3;
+      }
+
+      .loader-circle {
+        position: absolute;
+        border: 2px solid var(--accent);
+        border-radius: 50%;
+        opacity: 0.2;
+        animation: loader-pulse 3s infinite ease-in-out,
+          loader-rotate 10s infinite linear;
+      }
+
+      .loader-circle-1 {
+        width: 100px;
+        height: 100px;
+        animation-delay: 0s;
+      }
+
+      .loader-circle-2 {
+        width: 200px;
+        height: 200px;
+        animation-delay: 0.5s;
+      }
+
+      .loader-circle-3 {
+        width: 300px;
+        height: 300px;
+        animation-delay: 1s;
+      }
+
+      .loader-scan {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background-color: var(--accent);
+        opacity: 0.5;
+        box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
+        animation: loader-scan 2s infinite ease-in-out;
+      }
+
+      @keyframes loader-float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+
+      @keyframes loader-pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.5;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 0.8;
+        }
+      }
+
+      @keyframes loader-rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes loader-scan {
+        0% {
+          top: 0;
+        }
+        100% {
+          top: 100%;
+        }
+      }
+
+      /* Letter animation effects */
+      @keyframes letter-float-in {
+        0% {
+          transform: translateY(-100vh) rotate(45deg);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+      }
+
+      @keyframes letter-slide-in {
+        0% {
+          transform: translateX(-100vw);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes letter-slide-right {
+        0% {
+          transform: translateX(100vw);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes letter-scale-in {
+        0% {
+          transform: scale(3) rotate(20deg);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1) rotate(0deg);
+          opacity: 1;
+        }
+      }
+
+      @keyframes letter-flip-in {
+        0% {
+          transform: rotateX(90deg) translateY(50px);
+          opacity: 0;
+        }
+        100% {
+          transform: rotateX(0deg) translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes letter-bounce-in {
+        0% {
+          transform: translateY(200px);
+          opacity: 0;
+        }
+        70% {
+          transform: translateY(-30px);
+          opacity: 1;
+        }
+        85% {
+          transform: translateY(15px);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes letter-rotate-in {
+        0% {
+          transform: rotate(180deg) scale(0.5);
+          opacity: 0;
+        }
+        100% {
+          transform: rotate(0deg) scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* Final transition animation */
+      @keyframes loader-fade-out {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+
+      @keyframes hero-fade-in {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* Make hero section full width */
+      .hero-section {
+        width: 100vw;
+        position: relative;
+        left: 0;
+        right: 0;
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      /* Hero marquee styles */
+      .hero-marquee {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 5;
+        background: transparent;
+      }
+    </style>
+  </head>
+  <body class="dark">
+    <!-- Enhanced Futuristic Loader -->
+    <div class="futuristic-loader" id="futuristic-loader">
+      <div class="loader-grid"></div>
+      <div class="loader-glow loader-glow-1"></div>
+      <div class="loader-glow loader-glow-2"></div>
+      <div class="loader-particles" id="loader-particles"></div>
+
+      <div class="loader-content">
+        <div class="loader-name-container" id="loader-name-container">
+          <!-- Letters will be dynamically created by JS -->
+        </div>
+
+        <div class="loader-progress">
+          <div class="loader-progress-bar" id="loader-progress-bar"></div>
+        </div>
+
+        <div class="loader-status" id="loader-status">Initializing...</div>
+
+        <div class="loader-circles">
+          <div class="loader-circle loader-circle-1"></div>
+          <div class="loader-circle loader-circle-2"></div>
+          <div class="loader-circle loader-circle-3"></div>
+        </div>
+
+        <div class="loader-scan"></div>
+      </div>
+    </div>
+
+    <!-- Page Transition -->
+    <div class="page-transition" id="page-transition"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-follow hidden md:block"></div>
+    <div class="cursor-dot hidden md:block"></div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="progress-bar" id="progress-bar"></div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator hidden md:flex">
+      <a href="#home" class="scroll-dot active" data-section="home"></a>
+      <a href="#about" class="scroll-dot" data-section="about"></a>
+      <!-- <a href="#projects" class="scroll-dot" data-section="projects"></a> -->
+      <a href="#skills" class="scroll-dot" data-section="skills"></a>
+      <a href="#contact" class="scroll-dot" data-section="contact"></a>
+    </div>
+
+    <!-- Animated Background -->
+    <div class="animated-bg" id="animated-bg"></div>
+
+    <!-- Header -->
+    <header
+      class="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-opacity-80 sticky-header"
+      id="header"
+      style="background-color: var(--bg-primary)"
+    >
+      <div
+        class="container mx-auto px-4 py-4 flex justify-between items-center"
+      >
+        <div class="text-2xl font-bold">
+          <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600"
+            >DEV</span
+          >
+          <span style="color: var(--accent)">FOLIO</span>
+        </div>
+
+        <nav class="hidden md:flex space-x-8">
+          <a href="#home" class="nav-link" style="color: var(--text)">Home</a>
+          <a href="#about" class="nav-link" style="color: var(--text)">About</a>
+          <!-- <a href="#projects" class="nav-link" style="color: var(--text)"
+            >Projects</a
+          > -->
+          <a href="#skills" class="nav-link" style="color: var(--text)"
+            >Skills</a
+          >
+          <a href="#contact" class="nav-link" style="color: var(--text)"
+            >Contact</a
+          >
+        </nav>
+
+        <div class="flex items-center space-x-4">
+          <div class="theme-switch" id="theme-switch"></div>
+          <button class="md:hidden text-2xl" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="mobile-menu hidden md:hidden w-full" id="mobile-menu">
+        <div class="container mx-auto px-4 py-4 flex flex-col space-y-4">
+          <a href="#home" class="nav-link" style="color: var(--text)">Home</a>
+          <a href="#about" class="nav-link" style="color: var(--text)">About</a>
+          <!-- <a href="#projects" class="nav-link" style="color: var(--text)"
+            >Projects</a
+          > -->
+          <a href="#skills" class="nav-link" style="color: var(--text)"
+            >Skills</a
+          >
+          <a href="#contact" class="nav-link" style="color: var(--text)"
+            >Contact</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero Section with WebGL Distortion Effect - Full Width Background -->
+      <section
+        id="home"
+        class="hero-section relative overflow-hidden"
+        style="height: 100vh"
+      >
+        <canvas id="webgl-canvas"></canvas>
+        <div class="webgl-overlay"></div>
+        <div class="webgl-text-container">
+          <h1 class="webgl-text">ARON K A</h1>
+          <p class="webgl-subtitle">Full Stack Developer</p>
+        </div>
+
+        <!-- Enhanced Marquee Text Section - Now inside hero section -->
+        <div class="hero-marquee">
+          <div class="marquee-container">
+            <div class="marquee-track">
+              <div class="marquee-content">
+                <div class="marquee-item">
+                  <div class="marquee-text" style="color: var(--accent)">
+                    CREATIVE
+                    <span class="marquee-text-outline">CREATIVE</span>
+                  </div>
+                </div>
+                <div class="marquee-dot"></div>
+                <div class="marquee-item">
+                  <div class="marquee-text" style="color: var(--text)">
+                    DEVELOPER
+                    <span class="marquee-text-outline">DEVELOPER</span>
+                  </div>
+                </div>
+                <div class="marquee-dot"></div>
+                <div class="marquee-item">
+                  <div class="marquee-text" style="color: var(--accent)">
+                    MAVERICK
+                    <span class="marquee-text-outline">MAVERICK</span>
+                  </div>
+                </div>
+                <div class="marquee-dot"></div>
+                <div class="marquee-item">
+                  <div class="marquee-text" style="color: var(--text)">
+                    INNOVATOR
+                    <span class="marquee-text-outline">INNOVATOR</span>
+                  </div>
+                </div>
+                <div class="marquee-dot"></div>
+              </div>
+              <div class="marquee-content">
+                <div class="marquee-item">
+                  <div class="marquee-text" style="color: var(--accent)">
+                    CREATIVE
+                    <span class="marquee-text-outline">CREATIVE</span>
+                  </div>
+                </div>
+                <div class="marquee-dot"></div>
+                <div class="marquee-item">
+                  <div class="marquee-text" style="color: var(--text)">
+                    DEVELOPER
+                    <span class="marquee-text-outline">DEVELOPER</span>
+                  </div>
+                </div>
+                <div class="marquee-dot"></div>
+                <div class="marquee-item">
+                  <div class="marquee-text" style="color: var(--accent)">
+                    PROBLEM SOLVER
+                    <span class="marquee-text-outline">PROBLEM SOLVER</span>
+                  </div>
+                </div>
+                <div class="marquee-dot"></div>
+                <div class="marquee-item">
+                  <div class="marquee-text" style="color: var(--text)">
+                    INNOVATOR
+                    <span class="marquee-text-outline">INNOVATOR</span>
+                  </div>
+                </div>
+                <div class="marquee-dot"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-10"
+        >
+          <a href="#about" class="flex flex-col items-center">
+            <span class="mb-2 opacity-80">Scroll Down</span>
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 14l-7 7m0 0l-7-7m7 7V3"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- About Section with Terminal Industries Inspired Animations -->
+      <section
+        id="about"
+        class="scroll-section py-20 relative terminal-section"
+      >
+        <div class="terminal-grid"></div>
+        <div class="terminal-glow terminal-glow-1"></div>
+        <div class="terminal-glow terminal-glow-2"></div>
+        <div class="terminal-noise"></div>
+        <div class="container mx-auto px-4 relative z-10">
+          <div class="mb-16 text-center">
+            <div class="overflow-hidden inline-block">
+              <h2 class="text-3xl md:text-5xl font-bold split-text">
+                About <span style="color: var(--accent)">Me</span>
+              </h2>
+            </div>
+            <div
+              class="terminal-line mx-auto mt-4"
+              style="max-width: 120px"
+            ></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0 scroll-animation-item">
+              <div class="relative">
+                <div
+                  class="w-64 h-64 md:w-80 md:h-80 rounded-lg overflow-hidden mx-auto terminal-card"
+                >
+                  <img
+                    src="https://drive.google.com/thumbnail?id=1pqer1_4_bixHigRMhv3oTKfA7dRTDG-c&sz=s1000"
+                    alt="Me"
+                  />
+                  <!-- <svg
+                    viewBox="0 0 200 200"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-full h-full"
+                  >
+                    <rect width="200" height="200" fill="var(--bg-secondary)" />
+                    <circle
+                      cx="100"
+                      cy="70"
+                      r="40"
+                      fill="var(--accent)"
+                      opacity="0.8"
+                    />
+                    <rect
+                      x="60"
+                      y="120"
+                      width="80"
+                      height="60"
+                      rx="10"
+                      fill="var(--accent)"
+                      opacity="0.8"
+                    />
+                  </svg> -->
+                </div>
+                <div
+                  class="absolute -bottom-4 -right-4 w-full h-full border-2 rounded-lg scroll-animation-item"
+                  style="border-color: var(--accent); transition-delay: 0.3s"
+                ></div>
+              </div>
+            </div>
+
+            <div class="md:w-1/2 md:pl-10">
+              <div class="overflow-hidden mb-4">
+                <h3 class="text-2xl font-bold split-text">
+                  Software Developer
+                </h3>
+              </div>
+              <div class="overflow-hidden mb-6">
+                <p class="opacity-80 split-text">
+                  With over 3 years of experience in software development, I
+                  specialize in creating robust and scalable applications that
+                  solve real-world problems. My passion lies in crafting clean,
+                  efficient code and delivering exceptional user experiences.
+                </p>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="stagger-item" style="transition-delay: 0.1s">
+                  <h4 class="font-bold mb-2">Name:</h4>
+                  <p>ARON K A</p>
+                </div>
+                <div class="stagger-item" style="transition-delay: 0.2s">
+                  <h4 class="font-bold mb-2">Email:</h4>
+                  <p>sronashok321@gmail.com</p>
+                </div>
+                <div class="stagger-item" style="transition-delay: 0.3s">
+                  <h4 class="font-bold mb-2">Location:</h4>
+                  <p>Thodupuzha, Kerala, India</p>
+                </div>
+                <div class="stagger-item" style="transition-delay: 0.4s">
+                  <h4 class="font-bold mb-2">Availability:</h4>
+                  <p>Full-time</p>
+                </div>
+              </div>
+
+              <div
+                class="flex space-x-4 stagger-item"
+                style="transition-delay: 0.5s"
+              >
+                <a
+                  href="#"
+                  class="social-icon w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110 magnetic-button"
+                  style="background-color: var(--bg-secondary)"
+                >
+                  <i class="fab fa-github"></i>
+                </a>
+                <a
+                  href="#"
+                  class="social-icon w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110 magnetic-button"
+                  style="background-color: var(--bg-secondary)"
+                >
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a
+                  href="#"
+                  class="social-icon w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110 magnetic-button"
+                  style="background-color: var(--bg-secondary)"
+                >
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a
+                  href="#"
+                  class="social-icon w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110 magnetic-button"
+                  style="background-color: var(--bg-secondary)"
+                >
+                  <i class="fab fa-dribbble"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Section (Horizontal Scroll) - Fixed -->
+      <!-- <section
+        id="projects"
+        class="scroll-section py-20 relative terminal-section"
+      >
+        <div class="terminal-grid"></div>
+        <div class="terminal-glow terminal-glow-1"></div>
+        <div class="terminal-noise"></div>
+        <div class="container mx-auto px-4 relative z-10">
+          <div class="mb-16 text-center">
+            <div class="overflow-hidden inline-block">
+              <h2 class="text-3xl md:text-5xl font-bold split-text">
+                My <span style="color: var(--accent)">Projects</span>
+              </h2>
+            </div>
+            <div
+              class="terminal-line mx-auto mt-4"
+              style="max-width: 120px"
+            ></div>
+          </div>
+
+          <div class="overflow-hidden">
+            <p class="text-center mb-8 max-w-2xl mx-auto opacity-80 split-text">
+              Explore my featured projects. Each project showcases different
+              skills and technologies.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div
+              class="project-card rounded-lg overflow-hidden hover-card terminal-card scroll-animation-item"
+            >
+              <div class="relative h-48 overflow-hidden">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-80"
+                ></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <i class="fas fa-mobile-alt text-5xl text-white"></i>
+                </div>
+              </div>
+              <div class="p-6">
+                <div class="overflow-hidden mb-2">
+                  <h3 class="text-xl font-bold split-text">Mobile App</h3>
+                </div>
+                <div class="overflow-hidden mb-4">
+                  <p class="opacity-80 split-text">
+                    A cross-platform mobile application built with React Native
+                    for fitness tracking and health monitoring.
+                  </p>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span
+                    class="skill-pill px-2 py-1 rounded-full text-xs stagger-item"
+                    style="transition-delay: 0.1s"
+                    >React Native</span
+                  >
+                  <span
+                    class="skill-pill px-2 py-1 rounded-full text-xs stagger-item"
+                    style="transition-delay: 0.2s"
+                    >Redux</span
+                  >
+                  <span
+                    class="skill-pill px-2 py-1 rounded-full text-xs stagger-item"
+                    style="transition-delay: 0.3s"
+                    >Firebase</span
+                  >
+                </div>
+                <div
+                  class="flex justify-between stagger-item"
+                  style="transition-delay: 0.4s"
+                >
+                  <a
+                    href="#"
+                    class="font-medium hover:underline magnetic-button"
+                    style="color: var(--accent)"
+                    >View Project</a
+                  >
+                  <a
+                    href="#"
+                    class="font-medium hover:underline magnetic-button"
+                    style="color: var(--accent)"
+                  >
+                    <i class="fab fa-github mr-1"></i> Code
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="project-card rounded-lg overflow-hidden hover-card terminal-card scroll-animation-item"
+              style="transition-delay: 0.2s"
+            >
+              <div class="relative h-48 overflow-hidden">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-green-500 to-teal-600 opacity-80"
+                ></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <i class="fas fa-globe text-5xl text-white"></i>
+                </div>
+              </div>
+              <div class="p-6">
+                <div class="overflow-hidden mb-2">
+                  <h3 class="text-xl font-bold split-text">
+                    E-commerce Platform
+                  </h3>
+                </div>
+                <div class="overflow-hidden mb-4">
+                  <p class="opacity-80 split-text">
+                    A full-stack e-commerce solution with payment processing,
+                    inventory management, and analytics.
+                  </p>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span
+                    class="skill-pill px-2 py-1 rounded-full text-xs stagger-item"
+                    style="transition-delay: 0.1s"
+                    >Node.js</span
+                  >
+                  <span
+                    class="skill-pill px-2 py-1 rounded-full text-xs stagger-item"
+                    style="transition-delay: 0.2s"
+                    >React</span
+                  >
+                  <span
+                    class="skill-pill px-2 py-1 rounded-full text-xs stagger-item"
+                    style="transition-delay: 0.3s"
+                    >MongoDB</span
+                  >
+                </div>
+                <div
+                  class="flex justify-between stagger-item"
+                  style="transition-delay: 0.4s"
+                >
+                  <a
+                    href="#"
+                    class="font-medium hover:underline magnetic-button"
+                    style="color: var(--accent)"
+                    >View Project</a
+                  >
+                  <a
+                    href="#"
+                    class="font-medium hover:underline magnetic-button"
+                    style="color: var(--accent)"
+                  >
+                    <i class="fab fa-github mr-1"></i> Code
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="project-card rounded-lg overflow-hidden hover-card terminal-card scroll-animation-item"
+              style="transition-delay: 0.4s"
+            >
+              <div class="relative h-48 overflow-hidden">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-red-500 to-orange-600 opacity-80"
+                ></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <i class="fas fa-robot text-5xl text-white"></i>
+                </div>
+              </div>
+              <div class="p-6">
+                <div class="overflow-hidden mb-2">
+                  <h3 class="text-xl font-bold split-text">AI Assistant</h3>
+                </div>
+                <div class="overflow-hidden mb-4">
+                  <p class="opacity-80 split-text">
+                    A machine learning powered virtual assistant for task
+                    automation and data analysis.
+                  </p>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span
+                    class="skill-pill px-2 py-1 rounded-full text-xs stagger-item"
+                    style="transition-delay: 0.1s"
+                    >Python</span
+                  >
+                  <span
+                    class="skill-pill px-2 py-1 rounded-full text-xs stagger-item"
+                    style="transition-delay: 0.2s"
+                    >TensorFlow</span
+                  >
+                  <span
+                    class="skill-pill px-2 py-1 rounded-full text-xs stagger-item"
+                    style="transition-delay: 0.3s"
+                    >Flask</span
+                  >
+                </div>
+                <div
+                  class="flex justify-between stagger-item"
+                  style="transition-delay: 0.4s"
+                >
+                  <a
+                    href="#"
+                    class="font-medium hover:underline magnetic-button"
+                    style="color: var(--accent)"
+                    >View Project</a
+                  >
+                  <a
+                    href="#"
+                    class="font-medium hover:underline magnetic-button"
+                    style="color: var(--accent)"
+                  >
+                    <i class="fab fa-github mr-1"></i> Code
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="mt-12 text-center scroll-animation-item"
+            style="transition-delay: 0.6s"
+          >
+            <a
+              href="#"
+              class="btn-primary px-8 py-3 rounded-full font-medium magnetic-button"
+              >View All Projects</a
+            >
+          </div>
+        </div>
+      </section> -->
+
+      <!-- Skills Section with Terminal Industries Inspired Animations -->
+      <section
+        id="skills"
+        class="scroll-section py-20 relative terminal-section"
+      >
+        <div class="terminal-grid"></div>
+        <div class="terminal-glow terminal-glow-1"></div>
+        <div class="terminal-glow terminal-glow-2"></div>
+        <div class="terminal-noise"></div>
+        <div class="container mx-auto px-4 relative z-10">
+          <div class="mb-16 text-center">
+            <div class="overflow-hidden inline-block">
+              <h2 class="text-3xl md:text-5xl font-bold split-text">
+                My <span style="color: var(--accent)">Skills</span>
+              </h2>
+            </div>
+            <div
+              class="terminal-line mx-auto mt-4"
+              style="max-width: 120px"
+            ></div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div class="scroll-animation-item">
+              <div class="overflow-hidden mb-6">
+                <h3 class="text-2xl font-bold split-text">Technical Skills</h3>
+              </div>
+
+              <div class="space-y-6">
+                <div
+                  class="scroll-animation-item"
+                  style="transition-delay: 0.1s"
+                >
+                  <div class="flex justify-between mb-2">
+                    <span class="font-medium">PHP</span>
+                    <span class="terminal-counter">90%</span>
+                  </div>
+                  <div class="skill-bar">
+                    <div class="skill-progress" data-width="90%"></div>
+                  </div>
+                </div>
+
+                <div
+                  class="scroll-animation-item"
+                  style="transition-delay: 0.2s"
+                >
+                  <div class="flex justify-between mb-2">
+                    <span class="font-medium">Javascript</span>
+                    <span class="terminal-counter">88%</span>
+                  </div>
+                  <div class="skill-bar">
+                    <div class="skill-progress" data-width="88%"></div>
+                  </div>
+                </div>
+
+                <div
+                  class="scroll-animation-item"
+                  style="transition-delay: 0.3s"
+                >
+                  <div class="flex justify-between mb-2">
+                    <span class="font-medium">HTML & CSS</span>
+                    <span class="terminal-counter">85%</span>
+                  </div>
+                  <div class="skill-bar">
+                    <div class="skill-progress" data-width="85%"></div>
+                  </div>
+                </div>
+
+                <div
+                  class="scroll-animation-item"
+                  style="transition-delay: 0.4s"
+                >
+                  <div class="flex justify-between mb-2">
+                    <span class="font-medium">Laravel</span>
+                    <span class="terminal-counter">75%</span>
+                  </div>
+                  <div class="skill-bar">
+                    <div class="skill-progress" data-width="75%"></div>
+                  </div>
+                </div>
+
+                <div
+                  class="scroll-animation-item"
+                  style="transition-delay: 0.5s"
+                >
+                  <div class="flex justify-between mb-2">
+                    <span class="font-medium">SQL</span>
+                    <span class="terminal-counter">85%</span>
+                  </div>
+                  <div class="skill-bar">
+                    <div class="skill-progress" data-width="85%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="scroll-animation-item" style="transition-delay: 0.2s">
+              <div class="overflow-hidden mb-6">
+                <h3 class="text-2xl font-bold split-text">
+                  Professional Skills
+                </h3>
+              </div>
+
+              <div class="grid grid-cols-2 gap-6">
+                <div
+                  class="terminal-card p-6 rounded-lg text-center hover-card stagger-item"
+                  style="transition-delay: 0.1s"
+                >
+                  <div
+                    class="inline-block p-4 rounded-full mb-4"
+                    style="background-color: rgba(56, 189, 248, 0.1)"
+                  >
+                    <i
+                      class="fas fa-code text-3xl"
+                      style="color: var(--accent)"
+                    ></i>
+                  </div>
+                  <h4 class="text-xl font-bold mb-2">Clean Code</h4>
+                  <p class="opacity-80">
+                    Writing maintainable, efficient, and well-documented code.
+                  </p>
+                </div>
+
+                <div
+                  class="terminal-card p-6 rounded-lg text-center hover-card stagger-item"
+                  style="transition-delay: 0.2s"
+                >
+                  <div
+                    class="inline-block p-4 rounded-full mb-4"
+                    style="background-color: rgba(56, 189, 248, 0.1)"
+                  >
+                    <i
+                      class="fas fa-project-diagram text-3xl"
+                      style="color: var(--accent)"
+                    ></i>
+                  </div>
+                  <h4 class="text-xl font-bold mb-2">System Design</h4>
+                  <p class="opacity-80">
+                    Designing scalable and efficient software architectures.
+                  </p>
+                </div>
+
+                <div
+                  class="terminal-card p-6 rounded-lg text-center hover-card stagger-item"
+                  style="transition-delay: 0.3s"
+                >
+                  <div
+                    class="inline-block p-4 rounded-full mb-4"
+                    style="background-color: rgba(56, 189, 248, 0.1)"
+                  >
+                    <i
+                      class="fas fa-users text-3xl"
+                      style="color: var(--accent)"
+                    ></i>
+                  </div>
+                  <h4 class="text-xl font-bold mb-2">Team Collaboration</h4>
+                  <p class="opacity-80">
+                    Working effectively in agile development teams.
+                  </p>
+                </div>
+
+                <div
+                  class="terminal-card p-6 rounded-lg text-center hover-card stagger-item"
+                  style="transition-delay: 0.4s"
+                >
+                  <div
+                    class="inline-block p-4 rounded-full mb-4"
+                    style="background-color: rgba(56, 189, 248, 0.1)"
+                  >
+                    <i
+                      class="fas fa-tasks text-3xl"
+                      style="color: var(--accent)"
+                    ></i>
+                  </div>
+                  <h4 class="text-xl font-bold mb-2">Problem Solving</h4>
+                  <p class="opacity-80">
+                    Analytical thinking and creative problem-solving.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="mt-16 scroll-animation-item"
+            style="transition-delay: 0.3s"
+          >
+            <div class="overflow-hidden mb-6 text-center">
+              <h3 class="text-2xl font-bold mb-5 split-text">
+                Technologies I Work With
+              </h3>
+            </div>
+
+            <div
+              class="flex flex-wrap justify-center gap-4 magnetic-area"
+              id="skills-container"
+            >
+              <div
+                class="skill-pill px-6 py-3 rounded-full magnetic-button stagger-item"
+                style="transition-delay: 0.1s"
+              >
+                PHP
+              </div>
+              <div
+                class="skill-pill px-6 py-3 rounded-full magnetic-button stagger-item"
+                style="transition-delay: 0.15s"
+              >
+                Javascript
+              </div>
+              <div
+                class="skill-pill px-6 py-3 rounded-full magnetic-button stagger-item"
+                style="transition-delay: 0.2s"
+              >
+                HTML
+              </div>
+              <div
+                class="skill-pill px-6 py-3 rounded-full magnetic-button stagger-item"
+                style="transition-delay: 0.25s"
+              >
+                CSS
+              </div>
+              <div
+                class="skill-pill px-6 py-3 rounded-full magnetic-button stagger-item"
+                style="transition-delay: 0.3s"
+              >
+                Mysql
+              </div>
+              <div
+                class="skill-pill px-6 py-3 rounded-full magnetic-button stagger-item"
+                style="transition-delay: 0.35s"
+              >
+                Laravel
+              </div>
+              <div
+                class="skill-pill px-6 py-3 rounded-full magnetic-button stagger-item"
+                style="transition-delay: 0.4s"
+              >
+                MERN
+              </div>
+              <div
+                class="skill-pill px-6 py-3 rounded-full magnetic-button stagger-item"
+                style="transition-delay: 0.45s"
+              >
+                GitHub
+              </div>
+              <div
+                class="skill-pill px-6 py-3 rounded-full magnetic-button stagger-item"
+                style="transition-delay: 0.5s"
+              >
+                Git
+              </div>
+              <div
+                class="skill-pill px-6 py-3 rounded-full magnetic-button stagger-item"
+                style="transition-delay: 0.55s"
+              >
+                Jira
+              </div>
+              <div
+                class="skill-pill px-6 py-3 rounded-full magnetic-button stagger-item"
+                style="transition-delay: 0.6s"
+              >
+                Bitbucket
+              </div>
+              <div
+                class="skill-pill px-6 py-3 rounded-full magnetic-button stagger-item"
+                style="transition-delay: 0.75s"
+              >
+                CI/CD
+              </div>
+              <div
+                class="skill-pill px-6 py-3 rounded-full magnetic-button stagger-item"
+                style="transition-delay: 0.65s"
+              >
+                Server Integrations
+              </div>
+              <div
+                class="skill-pill px-6 py-3 rounded-full magnetic-button stagger-item"
+                style="transition-delay: 0.7s"
+              >
+                Cpanel/Hostinger
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section with Terminal Industries Inspired Animations -->
+      <section
+        id="contact"
+        class="scroll-section py-20 relative terminal-section"
+      >
+        <div class="terminal-grid"></div>
+        <div class="terminal-glow terminal-glow-1"></div>
+        <div class="terminal-glow terminal-glow-2"></div>
+        <div class="terminal-noise"></div>
+        <div class="container mx-auto px-4 relative z-10">
+          <div class="mb-16 text-center">
+            <div class="overflow-hidden inline-block">
+              <h2 class="text-3xl md:text-5xl font-bold split-text">
+                Get In <span style="color: var(--accent)">Touch</span>
+              </h2>
+            </div>
+            <div
+              class="terminal-line mx-auto mt-4"
+              style="max-width: 120px"
+            ></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row gap-10">
+            <div class="md:w-1/2 scroll-animation-item">
+              <div class="overflow-hidden mb-6">
+                <h3 class="text-2xl font-bold split-text">
+                  Contact Information
+                </h3>
+              </div>
+
+              <div class="space-y-6">
+                <div
+                  class="flex items-start stagger-item"
+                  style="transition-delay: 0.1s"
+                >
+                  <div
+                    class="w-12 h-12 rounded-full flex items-center justify-center mr-4 magnetic-button"
+                    style="background-color: var(--bg-secondary)"
+                  >
+                    <i class="fas fa-envelope" style="color: var(--accent)"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold mb-1">Email</h4>
+                    <p class="opacity-80">sronashok321@gmail.com</p>
+                  </div>
+                </div>
+
+                <div
+                  class="flex items-start stagger-item"
+                  style="transition-delay: 0.2s"
+                >
+                  <div
+                    class="w-12 h-12 rounded-full flex items-center justify-center mr-4 magnetic-button"
+                    style="background-color: var(--bg-secondary)"
+                  >
+                    <i class="fas fa-phone" style="color: var(--accent)"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold mb-1">Phone</h4>
+                    <p class="opacity-80">+1 (555) 123-4567</p>
+                  </div>
+                </div>
+
+                <div
+                  class="flex items-start stagger-item"
+                  style="transition-delay: 0.3s"
+                >
+                  <div
+                    class="w-12 h-12 rounded-full flex items-center justify-center mr-4 magnetic-button"
+                    style="background-color: var(--bg-secondary)"
+                  >
+                    <i
+                      class="fas fa-map-marker-alt"
+                      style="color: var(--accent)"
+                    ></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold mb-1">Location</h4>
+                    <p class="opacity-80">Thodupuzha, Kerala, Indialifornia</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-8 stagger-item" style="transition-delay: 0.4s">
+                <h4 class="font-bold mb-4">Follow Me</h4>
+                <div class="flex space-x-4">
+                  <a
+                    href="#"
+                    class="social-icon w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110 magnetic-button"
+                    style="background-color: var(--bg-secondary)"
+                  >
+                    <i class="fab fa-github"></i>
+                  </a>
+                  <a
+                    href="#"
+                    class="social-icon w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110 magnetic-button"
+                    style="background-color: var(--bg-secondary)"
+                  >
+                    <i class="fab fa-linkedin-in"></i>
+                  </a>
+                  <a
+                    href="#"
+                    class="social-icon w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110 magnetic-button"
+                    style="background-color: var(--bg-secondary)"
+                  >
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                  <a
+                    href="#"
+                    class="social-icon w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110 magnetic-button"
+                    style="background-color: var(--bg-secondary)"
+                  >
+                    <i class="fab fa-dribbble"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="md:w-1/2 scroll-animation-item"
+              style="transition-delay: 0.2s"
+            >
+              <div class="overflow-hidden mb-6">
+                <h3 class="text-2xl font-bold split-text">Send Me a Message</h3>
+              </div>
+
+              <form
+                id="contact-form"
+                class="space-y-6 terminal-card p-6 rounded-lg"
+              >
+                <div class="stagger-item" style="transition-delay: 0.1s">
+                  <label for="name" class="block mb-2 font-medium">Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    class="contact-input w-full px-4 py-3 rounded-lg"
+                    required
+                  />
+                </div>
+
+                <div class="stagger-item" style="transition-delay: 0.2s">
+                  <label for="email" class="block mb-2 font-medium"
+                    >Email</label
+                  >
+                  <input
+                    type="email"
+                    id="email"
+                    class="contact-input w-full px-4 py-3 rounded-lg"
+                    required
+                  />
+                </div>
+
+                <div class="stagger-item" style="transition-delay: 0.3s">
+                  <label for="subject" class="block mb-2 font-medium"
+                    >Subject</label
+                  >
+                  <input
+                    type="text"
+                    id="subject"
+                    class="contact-input w-full px-4 py-3 rounded-lg"
+                    required
+                  />
+                </div>
+
+                <div class="stagger-item" style="transition-delay: 0.4s">
+                  <label for="message" class="block mb-2 font-medium"
+                    >Message</label
+                  >
+                  <textarea
+                    id="message"
+                    rows="5"
+                    class="contact-input w-full px-4 py-3 rounded-lg resize-none"
+                    required
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  class="btn-primary w-full px-6 py-3 rounded-lg font-medium magnetic-button stagger-item"
+                  style="transition-delay: 0.5s"
+                >
+                  Send Message
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer with Terminal Industries Inspired Background -->
+    <footer
+      class="py-10 relative"
+      style="background-color: var(--bg-secondary)"
+    >
+      <div class="terminal-footer-bg"></div>
+      <div class="terminal-grid"></div>
+      <div class="terminal-noise"></div>
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="mb-6 md:mb-0">
+            <div class="text-2xl font-bold">
+              <span
+                class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600"
+                >DEV</span
+              >
+              <span style="color: var(--accent)">FOLIO</span>
+            </div>
+          </div>
+
+          <div class="flex space-x-8 mb-6 md:mb-0">
+            <a href="#home" class="nav-link" style="color: var(--text)">Home</a>
+            <a href="#about" class="nav-link" style="color: var(--text)"
+              >About</a
+            >
+            <!-- <a href="#projects" class="nav-link" style="color: var(--text)"
+              >Projects</a
+            > -->
+            <a href="#skills" class="nav-link" style="color: var(--text)"
+              >Skills</a
+            >
+            <a href="#contact" class="nav-link" style="color: var(--text)"
+              >Contact</a
+            >
+          </div>
+
+          <div class="flex space-x-4">
+            <a
+              href="#"
+              class="social-icon w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110 magnetic-button"
+              style="background-color: var(--bg-primary)"
+            >
+              <i class="fab fa-github"></i>
+            </a>
+            <a
+              href="#"
+              class="social-icon w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110 magnetic-button"
+              style="background-color: var(--bg-primary)"
+            >
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a
+              href="#"
+              class="social-icon w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110 magnetic-button"
+              style="background-color: var(--bg-primary)"
+            >
+              <i class="fab fa-twitter"></i>
+            </a>
+          </div>
+        </div>
+
+        <div
+          class="border-t mt-8 pt-8 text-center opacity-80"
+          style="border-color: var(--bg-primary)"
+        >
+          <p>&copy; 2023 ARON K A. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Enhanced Futuristic Loader Animation with Unique Letter Animations
+      document.addEventListener("DOMContentLoaded", () => {
+        const loaderOverlay = document.getElementById("futuristic-loader");
+        const loaderNameContainer = document.getElementById(
+          "loader-name-container"
+        );
+        const loaderProgressBar = document.getElementById(
+          "loader-progress-bar"
+        );
+        const loaderStatus = document.getElementById("loader-status");
+        const loaderParticles = document.getElementById("loader-particles");
+
+        // Create loader particles
+        for (let i = 0; i < 30; i++) {
+          const particle = document.createElement("div");
+          particle.classList.add("loader-particle");
+
+          // Random size between 2px and 6px
+          const size = Math.random() * 4 + 2;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+
+          // Random position
+          particle.style.left = `${Math.random() * 100}%`;
+          particle.style.top = `${Math.random() * 100}%`;
+
+          // Random animation
+          const duration = Math.random() * 3 + 2;
+          const delay = Math.random() * 2;
+          particle.style.animation = `loader-float ${duration}s infinite ease-in-out ${delay}s alternate`;
+
+          loaderParticles.appendChild(particle);
+        }
+
+        // Define the name to animate
+        const name = "ARON K A";
+
+        // Define different animation types for each letter
+        const animationTypes = [
+          {
+            name: "letter-float-in",
+            duration: "1.2s",
+            easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+          },
+          {
+            name: "letter-slide-in",
+            duration: "1s",
+            easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+          },
+          {
+            name: "letter-slide-right",
+            duration: "1.1s",
+            easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+          },
+          {
+            name: "letter-scale-in",
+            duration: "1.3s",
+            easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+          },
+          {
+            name: "letter-flip-in",
+            duration: "1.2s",
+            easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+          },
+          {
+            name: "letter-bounce-in",
+            duration: "1.4s",
+            easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+          },
+          {
+            name: "letter-rotate-in",
+            duration: "1.1s",
+            easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+          },
+        ];
+
+        // Create and position each letter with a unique animation
+        for (let i = 0; i < name.length; i++) {
+          const letter = document.createElement("div");
+          letter.classList.add("loader-letter");
+          letter.textContent = name[i];
+
+          // Position letters horizontally
+          const letterWidth = 60; // Approximate width of each letter
+          const totalWidth = name.length * letterWidth;
+          const startX = -totalWidth / 2 + letterWidth / 2;
+          letter.style.left = `calc(50% + ${startX + i * letterWidth}px)`;
+
+          // Apply a random animation from our types
+          const randomAnimation =
+            animationTypes[Math.floor(Math.random() * animationTypes.length)];
+          letter.style.animation = `${randomAnimation.name} ${randomAnimation.duration} ${randomAnimation.easing} forwards`;
+
+          // Stagger the animations
+          letter.style.animationDelay = `${0.1 + i * 0.15}s`;
+
+          // Add a glow effect to some letters
+          if (Math.random() > 0.5) {
+            letter.style.textShadow = "0 0 15px var(--accent)";
+          }
+
+          // Add letter to container
+          loaderNameContainer.appendChild(letter);
+        }
+
+        // Simulate loading progress
+        let progress = 0;
+        const loadingInterval = setInterval(() => {
+          progress += Math.random() * 10;
+          if (progress >= 100) {
+            progress = 100;
+            clearInterval(loadingInterval);
+
+            // Update status
+            loaderStatus.textContent = "Ready!";
+
+            // Create a dramatic transition to the main page
+            setTimeout(() => {
+              // First gather all letters to the center
+              const letters = document.querySelectorAll(".loader-letter");
+              letters.forEach((letter, index) => {
+                letter.style.transition =
+                  "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)";
+                letter.style.left = "50%";
+                letter.style.transform = "translateX(-50%) scale(0.8)";
+                letter.style.opacity = "0.8";
+              });
+
+              // Then explode them outward
+              setTimeout(() => {
+                letters.forEach((letter, index) => {
+                  const angle = Math.random() * Math.PI * 2;
+                  const distance = 100 + Math.random() * 200;
+                  const x = Math.cos(angle) * distance;
+                  const y = Math.sin(angle) * distance;
+
+                  letter.style.transition =
+                    "all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)";
+                  letter.style.transform = `translate(${x}px, ${y}px) scale(0) rotate(${
+                    Math.random() * 360
+                  }deg)`;
+                  letter.style.opacity = "0";
+                });
+
+                // Fade out the loader
+                setTimeout(() => {
+                  loaderOverlay.style.animation =
+                    "loader-fade-out 0.8s forwards";
+
+                  // Initialize WebGL effect after loader is hidden
+                  setTimeout(() => {
+                    loaderOverlay.style.display = "none";
+                    document.getElementById("home").style.animation =
+                      "hero-fade-in 1s forwards";
+
+                    // Initialize WebGL effect
+                    new WebGLDistortion();
+                  }, 800);
+                }, 600);
+              }, 800);
+            }, 500);
+          } else {
+            // Update status messages
+            const statusMessages = [
+              "Initializing...",
+              "Loading assets...",
+              "Compiling shaders...",
+              "Connecting neural networks...",
+              "Optimizing algorithms...",
+              "Calibrating interface...",
+            ];
+
+            if (progress > 20 && progress < 40) {
+              loaderStatus.textContent = statusMessages[1];
+            } else if (progress >= 40 && progress < 60) {
+              loaderStatus.textContent = statusMessages[2];
+            } else if (progress >= 60 && progress < 80) {
+              loaderStatus.textContent = statusMessages[3];
+            } else if (progress >= 80) {
+              loaderStatus.textContent = statusMessages[4];
+            }
+          }
+
+          loaderProgressBar.style.width = `${progress}%`;
+        }, 200);
+      });
+
+      // Theme Switcher
+      const body = document.body;
+      const themeSwitch = document.getElementById("theme-switch");
+
+      // Check for saved theme preference or use default dark theme
+      const savedTheme = localStorage.getItem("theme") || "dark";
+      body.classList.add(savedTheme);
+
+      themeSwitch.addEventListener("click", () => {
+        if (body.classList.contains("dark")) {
+          body.classList.remove("dark");
+          body.classList.add("light");
+          localStorage.setItem("theme", "light");
+
+          // Animate theme change
+          const pageTransition = document.getElementById("page-transition");
+          pageTransition.style.transform = "scaleY(1)";
+          setTimeout(() => {
+            pageTransition.style.transform = "scaleY(0)";
+          }, 500);
+        } else {
+          body.classList.remove("light");
+          body.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+
+          // Animate theme change
+          const pageTransition = document.getElementById("page-transition");
+          pageTransition.style.transform = "scaleY(1)";
+          setTimeout(() => {
+            pageTransition.style.transform = "scaleY(0)";
+          }, 500);
+        }
+      });
+
+      // Mobile Menu Toggle
+      const menuToggle = document.getElementById("menu-toggle");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      menuToggle.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+
+      // Smooth Scrolling for Anchor Links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          const targetId = this.getAttribute("href");
+          const targetElement = document.querySelector(targetId);
+
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 80,
+              behavior: "smooth",
+            });
+
+            // Close mobile menu if open
+            if (!mobileMenu.classList.contains("hidden")) {
+              mobileMenu.classList.add("hidden");
+            }
+
+            // Update active scroll dot
+            document.querySelectorAll(".scroll-dot").forEach((dot) => {
+              dot.classList.remove("active");
+            });
+            document
+              .querySelector(
+                `.scroll-dot[data-section="${targetId.substring(1)}"]`
+              )
+              .classList.add("active");
+          }
+        });
+      });
+
+      // Custom Cursor Effect (Desktop Only)
+      const cursorFollow = document.querySelector(".cursor-follow");
+      const cursorDot = document.querySelector(".cursor-dot");
+
+      if (window.innerWidth > 768) {
+        document.addEventListener("mousemove", (e) => {
+          cursorFollow.style.left = e.clientX + "px";
+          cursorFollow.style.top = e.clientY + "px";
+
+          cursorDot.style.left = e.clientX + "px";
+          cursorDot.style.top = e.clientY + "px";
+        });
+
+        // Cursor hover effect on interactive elements
+        const interactiveElements = document.querySelectorAll(
+          "a, button, .magnetic-button, .skill-pill"
+        );
+        interactiveElements.forEach((element) => {
+          element.addEventListener("mouseenter", () => {
+            cursorFollow.style.transform = "translate(-50%, -50%) scale(1.5)";
+            cursorFollow.style.borderColor = "var(--accent)";
+            cursorFollow.style.backgroundColor = "rgba(56, 189, 248, 0.1)";
+          });
+
+          element.addEventListener("mouseleave", () => {
+            cursorFollow.style.transform = "translate(-50%, -50%) scale(1)";
+            cursorFollow.style.borderColor = "var(--accent)";
+            cursorFollow.style.backgroundColor = "transparent";
+          });
+        });
+      }
+
+      // Scroll Progress Bar
+      const progressBar = document.getElementById("progress-bar");
+
+      window.addEventListener("scroll", () => {
+        const scrollTotal =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrollProgress = (window.scrollY / scrollTotal) * 100;
+        progressBar.style.width = scrollProgress + "%";
+
+        // Update active scroll dot based on scroll position
+        const sections = document.querySelectorAll(
+          ".scroll-section, .hero-section"
+        );
+        let currentSectionId = "";
+
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop - 100;
+          const sectionHeight = section.offsetHeight;
+
+          if (
+            window.scrollY >= sectionTop &&
+            window.scrollY < sectionTop + sectionHeight
+          ) {
+            currentSectionId = section.getAttribute("id");
+          }
+        });
+
+        if (currentSectionId) {
+          document.querySelectorAll(".scroll-dot").forEach((dot) => {
+            dot.classList.remove("active");
+          });
+          document
+            .querySelector(`.scroll-dot[data-section="${currentSectionId}"]`)
+            .classList.add("active");
+        }
+
+        // Sticky header effect
+        const header = document.getElementById("header");
+        if (window.scrollY > 50) {
+          header.classList.add("scrolled");
+        } else {
+          header.classList.remove("scrolled");
+        }
+      });
+
+      // Contact Form Submission
+      const contactForm = document.getElementById("contact-form");
+
+      contactForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        // Get form values
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const subject = document.getElementById("subject").value;
+        const message = document.getElementById("message").value;
+
+        /*************  ✨ Windsurf Command 🌟  *************/
+        Email.send({
+          Host: "smtp.elasticemail.com",
+          Username: "aron@aron.ci",
+          Password: "5D4C92F1E8E4B8E4C9E6F9E7E8F9E0E1",
+          SecureToken: "c9334c5a-6b6c-4dcf-8494-0c7d5b1f64e5",
+          To: "aron@aron.ci",
+          From: "aron@aron.ci",
+          Subject: subject,
+          Body: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+        });
+
+        /*******  657793f7-705f-4ccd-8b2a-d80d3d7f1647  *******/
+        alert(
+          `Thank you, ${name}! Your message has been received. I'll get back to you soon.`
+        );
+
+        // Reset form
+        contactForm.reset();
+      });
+
+      // Create animated background particles
+      const animatedBg = document.getElementById("animated-bg");
+      const particleCount = 20;
+
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement("div");
+        particle.classList.add("particle");
+
+        // Random size between 5px and 20px
+        const size = Math.random() * 15 + 5;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+
+        // Random position
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+
+        // Random opacity
+        particle.style.opacity = Math.random() * 0.5;
+
+        // Random animation duration between 15s and 30s
+        const duration = Math.random() * 15 + 15;
+        particle.style.animationDuration = `${duration}s`;
+
+        // Random animation delay
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+
+        animatedBg.appendChild(particle);
+      }
+
+      // Magnetic button effect
+      const magneticButtons = document.querySelectorAll(".magnetic-button");
+
+      magneticButtons.forEach((button) => {
+        button.addEventListener("mousemove", (e) => {
+          const rect = button.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+
+          button.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+        });
+
+        button.addEventListener("mouseleave", () => {
+          button.style.transform = "translate(0, 0)";
+        });
+      });
+
+      // Create magnetic effect for skill pills
+      const skillsContainer = document.getElementById("skills-container");
+      const magneticItems = document.querySelectorAll(
+        "#skills-container .skill-pill"
+      );
+
+      skillsContainer.addEventListener("mousemove", (e) => {
+        const rect = skillsContainer.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        magneticItems.forEach((item) => {
+          const itemRect = item.getBoundingClientRect();
+          const itemX = itemRect.left - rect.left + itemRect.width / 2;
+          const itemY = itemRect.top - rect.top + itemRect.height / 2;
+
+          const distX = mouseX - itemX;
+          const distY = mouseY - itemY;
+          const distance = Math.sqrt(distX * distX + distY * distY);
+
+          if (distance < 100) {
+            const strength = (100 - distance) / 100;
+            const moveX = distX * strength * 0.2;
+            const moveY = distY * strength * 0.2;
+
+            item.style.transform = `translate(${moveX}px, ${moveY}px) scale(${
+              1 + strength * 0.1
+            })`;
+            item.style.zIndex = "10";
+          } else {
+            item.style.transform = "translate(0, 0) scale(1)";
+            item.style.zIndex = "1";
+          }
+        });
+      });
+
+      skillsContainer.addEventListener("mouseleave", () => {
+        magneticItems.forEach((item) => {
+          item.style.transform = "translate(0, 0) scale(1)";
+          item.style.zIndex = "1";
+        });
+      });
+
+      // Reveal animations on scroll
+      function revealOnScroll() {
+        const sections = document.querySelectorAll(
+          ".scroll-section, .hero-section"
+        );
+
+        sections.forEach((section) => {
+          const windowHeight = window.innerHeight;
+          const elementTop = section.getBoundingClientRect().top;
+          const elementVisible = 150;
+
+          if (elementTop < windowHeight - elementVisible) {
+            activateAnimations(section);
+          }
+        });
+      }
+
+      function activateAnimations(container) {
+        if (!container) return;
+
+        // Activate split text animations
+        const splitTexts = container.querySelectorAll(".split-text");
+        splitTexts.forEach((text) => {
+          text.classList.add("active");
+        });
+
+        // Activate scroll animation items
+        const scrollItems = container.querySelectorAll(
+          ".scroll-animation-item"
+        );
+        scrollItems.forEach((item) => {
+          item.classList.add("active");
+        });
+
+        // Activate stagger items
+        const staggerItems = container.querySelectorAll(".stagger-item");
+        staggerItems.forEach((item) => {
+          item.classList.add("active");
+        });
+
+        // Activate terminal lines
+        const terminalLines = container.querySelectorAll(".terminal-line");
+        terminalLines.forEach((line) => {
+          line.classList.add("active");
+        });
+
+        // Activate terminal counters
+        const terminalCounters =
+          container.querySelectorAll(".terminal-counter");
+        terminalCounters.forEach((counter) => {
+          counter.classList.add("active");
+        });
+
+        // Activate scroll scale items
+        const scrollScaleItems = container.querySelectorAll(".scroll-scale");
+        scrollScaleItems.forEach((item) => {
+          item.classList.add("active");
+        });
+
+        // Activate scroll rotate items
+        const scrollRotateItems = container.querySelectorAll(".scroll-rotate");
+        scrollRotateItems.forEach((item) => {
+          item.classList.add("active");
+        });
+
+        // Activate terminal text reveal
+        const textReveals = container.querySelectorAll(".terminal-text-reveal");
+        textReveals.forEach((text) => {
+          text.classList.add("active");
+        });
+
+        // Animate skill bars when in view
+        const skillBars = container.querySelectorAll(".skill-progress");
+        skillBars.forEach((bar) => {
+          const width = bar.getAttribute("data-width");
+          bar.style.width = width;
+        });
+      }
+
+      window.addEventListener("scroll", revealOnScroll);
+      window.addEventListener("load", () => {
+        // Activate animations for the initial view
+        setTimeout(() => {
+          revealOnScroll();
+        }, 1000);
+      });
+
+      // Initialize GSAP for advanced animations
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Animate the skills container
+      gsap.to("#skills-container", {
+        scrollTrigger: {
+          trigger: "#skills-container",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+        },
+        y: -50,
+        opacity: 1,
+        duration: 1,
+      });
+
+      // Enhanced marquee text animation
+      const marqueeTexts = document.querySelectorAll(".marquee-text");
+
+      marqueeTexts.forEach((text, index) => {
+        gsap.to(text, {
+          y: -10,
+          rotateX: 5,
+          duration: 2,
+          ease: "power1.inOut",
+          repeat: -1,
+          yoyo: true,
+          delay: index * 0.2,
+        });
+      });
+
+      // Terminal Industries inspired parallax scroll effects
+      gsap.utils.toArray(".parallax-scroll").forEach((section) => {
+        gsap.to(section, {
+          y: (i, target) =>
+            -ScrollTrigger.maxScroll(window) * target.dataset.speed || 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      });
+
+      // Terminal Industries inspired counter animation
+      function animateCounter(element, target, duration = 2000) {
+        let start = 0;
+        const increment = target / (duration / 16);
+
+        function updateCount() {
+          start += increment;
+          if (start < target) {
+            element.textContent = Math.floor(start) + "%";
+            requestAnimationFrame(updateCount);
+          } else {
+            element.textContent = target + "%";
+          }
+        }
+
+        updateCount();
+      }
+
+      // Initialize counter animations when they come into view
+      const counterObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const target = parseInt(entry.target.textContent);
+              animateCounter(entry.target, target);
+              counterObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+
+      document.querySelectorAll(".terminal-counter").forEach((counter) => {
+        counterObserver.observe(counter);
+      });
+
+      // WebGL Distortion Effect - Full Width Background with Smoother Animation
+      class WebGLDistortion {
+        constructor() {
+          this.canvas = document.getElementById("webgl-canvas");
+          this.renderer = new THREE.WebGLRenderer({
+            canvas: this.canvas,
+            alpha: true,
+            antialias: true,
+          });
+
+          this.width = window.innerWidth;
+          this.height = window.innerHeight;
+
+          this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+          this.renderer.setSize(this.width, this.height);
+
+          this.scene = new THREE.Scene();
+
+          this.camera = new THREE.PerspectiveCamera(
+            70,
+            this.width / this.height,
+            0.01,
+            1000
+          );
+          this.camera.position.set(0, 0, 2);
+
+          this.time = 0;
+          this.mouse = new THREE.Vector2(0, 0);
+          this.targetMouse = new THREE.Vector2(0, 0);
+
+          this.setupResize();
+          this.addObjects();
+          this.mouseEvents();
+          this.render();
+        }
+
+        setupResize() {
+          window.addEventListener("resize", this.resize.bind(this));
+        }
+
+        resize() {
+          this.width = window.innerWidth;
+          this.height = window.innerHeight;
+
+          this.renderer.setSize(this.width, this.height);
+          this.camera.aspect = this.width / this.height;
+          this.camera.updateProjectionMatrix();
+
+          this.material.uniforms.resolution.value.x = this.width;
+          this.material.uniforms.resolution.value.y = this.height;
+
+          // Adjust the plane size to cover the entire viewport
+          const distance = this.camera.position.z;
+          const fov = this.camera.fov * (Math.PI / 180);
+          const height = 2 * Math.tan(fov / 2) * distance;
+          const width = height * this.camera.aspect;
+
+          this.mesh.scale.set(width, height, 1);
+        }
+
+        mouseEvents() {
+          window.addEventListener("mousemove", (e) => {
+            this.targetMouse.x = (e.clientX / this.width) * 2 - 1;
+            this.targetMouse.y = -(e.clientY / this.height) * 2 + 1;
+          });
+
+          window.addEventListener("touchmove", (e) => {
+            this.targetMouse.x = (e.touches[0].clientX / this.width) * 2 - 1;
+            this.targetMouse.y = -(e.touches[0].clientY / this.height) * 2 + 1;
+          });
+        }
+
+        addObjects() {
+          const vertexShader = `
+                    varying vec2 vUv;
+                    void main() {
+                        vUv = uv;
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                    }
+                `;
+
+          const fragmentShader = `
+                    uniform float time;
+                    uniform vec2 mouse;
+                    uniform vec2 resolution;
+                    uniform vec3 color1;
+                    uniform vec3 color2;
+                    varying vec2 vUv;
+                    
+                    #define PI 3.14159265359
+                    
+                    vec3 mod289(vec3 x) {
+                        return x - floor(x * (1.0 / 289.0)) * 289.0;
+                    }
+                    
+                    vec4 mod289(vec4 x) {
+                        return x - floor(x * (1.0 / 289.0)) * 289.0;
+                    }
+                    
+                    vec4 permute(vec4 x) {
+                        return mod289(((x*34.0)+1.0)*x);
+                    }
+                    
+                    vec4 taylorInvSqrt(vec4 r) {
+                        return 1.79284291400159 - 0.85373472095314 * r;
+                    }
+                    
+                    float snoise(vec3 v) {
+                        const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+                        const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+                        
+                        // First corner
+                        vec3 i  = floor(v + dot(v, C.yyy));
+                        vec3 x0 = v - i + dot(i, C.xxx);
+                        
+                        // Other corners
+                        vec3 g = step(x0.yzx, x0.xyz);
+                        vec3 l = 1.0 - g;
+                        vec3 i1 = min(g.xyz, l.zxy);
+                        vec3 i2 = max(g.xyz, l.zxy);
+                        
+                        vec3 x1 = x0 - i1 + C.xxx;
+                        vec3 x2 = x0 - i2 + C.yyy;
+                        vec3 x3 = x0 - D.yyy;
+                        
+                        // Permutations
+                        i = mod289(i);
+                        vec4 p = permute(permute(permute(
+                                i.z + vec4(0.0, i1.z, i2.z, 1.0))
+                                + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+                                + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+                                
+                        // Gradients
+                        float n_ = 0.142857142857;
+                        vec3 ns = n_ * D.wyz - D.xzx;
+                        
+                        vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+                        
+                        vec4 x_ = floor(j * ns.z);
+                        vec4 y_ = floor(j - 7.0 * x_);
+                        
+                        vec4 x = x_ *ns.x + ns.yyyy;
+                        vec4 y = y_ *ns.x + ns.yyyy;
+                        vec4 h = 1.0 - abs(x) - abs(y);
+                        
+                        vec4 b0 = vec4(x.xy, y.xy);
+                        vec4 b1 = vec4(x.zw, y.zw);
+                        
+                        vec4 s0 = floor(b0)*2.0 + 1.0;
+                        vec4 s1 = floor(b1)*2.0 + 1.0;
+                        vec4 sh = -step(h, vec4(0.0));
+                        
+                        vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+                        vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+                        
+                        vec3 p0 = vec3(a0.xy, h.x);
+                        vec3 p1 = vec3(a0.zw, h.y);
+                        vec3 p2 = vec3(a1.xy, h.z);
+                        vec3 p3 = vec3(a1.zw, h.w);
+                        
+                        // Normalise gradients
+                        vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+                        p0 *= norm.x;
+                        p1 *= norm.y;
+                        p2 *= norm.z;
+                        p3 *= norm.w;
+                        
+                        // Mix final noise value
+                        vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+                        m = m * m;
+                        return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+                    }
+                    
+                    void main() {
+                        vec2 uv = vUv;
+                        
+                        // Mouse distortion - smoother and more subtle
+                        float dist = distance(uv, mouse + 0.5);
+                        float distortionStrength = smoothstep(0.5, 0.0, dist) * 0.2;
+                        
+                        // Noise distortion - slower and smoother
+                        float noise1 = snoise(vec3(uv * 2.0, time * 0.1)) * 0.08;
+                        float noise2 = snoise(vec3(uv * 4.0, time * 0.05 + 100.0)) * 0.04;
+                        
+                        // Combined distortion - more subtle
+                        vec2 distortedUV = uv;
+                        distortedUV += (mouse - vec2(0.0)) * distortionStrength;
+                        distortedUV += vec2(noise1, noise2);
+                        
+                        // Create smoother gradient
+                        float gradientNoise = snoise(vec3(distortedUV * 1.5, time * 0.05)) * 0.5 + 0.5;
+                        vec3 color = mix(color1, color2, gradientNoise);
+                        
+                        // Add subtle patterns
+                        float pattern1 = sin(distortedUV.x * 15.0 + time * 0.5) * sin(distortedUV.y * 15.0 + time * 0.5) * 0.05 + 0.05;
+                        float pattern2 = step(0.98, sin(distortedUV.x * 80.0) * sin(distortedUV.y * 80.0)) * 0.1;
+                        
+                        // Final color - smoother transitions
+                        color += pattern1 + pattern2;
+                        color *= 0.9 + 0.1 * sin(time * 0.5 + uv.x * 2.0 * PI);
+                        
+                        gl_FragColor = vec4(color, 1.0);
+                    }
+                `;
+
+          this.material = new THREE.ShaderMaterial({
+            uniforms: {
+              time: { value: 0 },
+              mouse: { value: new THREE.Vector2(0, 0) },
+              resolution: { value: new THREE.Vector2(this.width, this.height) },
+              color1: { value: new THREE.Color(0x0f172a) },
+              color2: { value: new THREE.Color(0x38bdf8) },
+            },
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+          });
+
+          // Create a plane that covers the entire viewport
+          const geometry = new THREE.PlaneGeometry(2, 2, 32, 32);
+          this.mesh = new THREE.Mesh(geometry, this.material);
+
+          // Adjust the plane size to cover the entire viewport
+          const distance = this.camera.position.z;
+          const fov = this.camera.fov * (Math.PI / 180);
+          const height = 2 * Math.tan(fov / 2) * distance;
+          const width = height * this.camera.aspect;
+
+          this.mesh.scale.set(width, height, 1);
+
+          this.scene.add(this.mesh);
+        }
+
+        render() {
+          this.time += 0.005; // Slower time increment for smoother animation
+          this.material.uniforms.time.value = this.time;
+
+          // Smoother mouse movement with more damping
+          this.mouse.x += (this.targetMouse.x - this.mouse.x) * 0.05;
+          this.mouse.y += (this.targetMouse.y - this.mouse.y) * 0.05;
+          this.material.uniforms.mouse.value = this.mouse;
+
+          this.renderer.render(this.scene, this.camera);
+          requestAnimationFrame(this.render.bind(this));
+        }
+      }
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'966afafff5641194',t:'MTc1Mzc3NDk1NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>

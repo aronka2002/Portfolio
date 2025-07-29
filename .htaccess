@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On # Force requests for /index.html to simply / RewriteCond
+  %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html\ HTTP/ RewriteRule ^index\.html$ /
+  [R=301,L] # This is your existing rule to remove .html extension RewriteCond
+  %{REQUEST_FILENAME} !-d RewriteCond %{REQUEST_FILENAME}\.html -f RewriteRule
+  ^(.*)$ $1.html [L]
+</IfModule>
