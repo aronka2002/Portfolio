@@ -2270,6 +2270,8 @@
 
               <form
                 id="contact-form"
+                action="https://formspree.io/f/xdkdzyla"
+                method="POST"
                 class="space-y-6 terminal-card p-6 rounded-lg"
               >
                 <div class="stagger-item" style="transition-delay: 0.1s">
@@ -2743,36 +2745,32 @@
       });
 
       // Contact Form Submission
-      const contactForm = document.getElementById("contact-form");
+      const form = document.getElementById("contact-form");
+      const status = document.getElementById("form-status");
 
-      contactForm.addEventListener("submit", (e) => {
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        const data = new FormData(form);
+        const action = form.action;
 
-        // Get form values
-        const name = document.getElementById("name").value;
-        const email = document.getElementById("email").value;
-        const subject = document.getElementById("subject").value;
-        const message = document.getElementById("message").value;
+        try {
+          const res = await fetch(action, {
+            method: "POST",
+            body: data,
+            headers: {
+              Accept: "application/json",
+            },
+          });
 
-        /*************  ✨ Windsurf Command 🌟  *************/
-        Email.send({
-          Host: "smtp.elasticemail.com",
-          Username: "aron@aron.ci",
-          Password: "5D4C92F1E8E4B8E4C9E6F9E7E8F9E0E1",
-          SecureToken: "c9334c5a-6b6c-4dcf-8494-0c7d5b1f64e5",
-          To: "aron@aron.ci",
-          From: "aron@aron.ci",
-          Subject: subject,
-          Body: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
-        });
-
-        /*******  657793f7-705f-4ccd-8b2a-d80d3d7f1647  *******/
-        alert(
-          `Thank you, ${name}! Your message has been received. I'll get back to you soon.`
-        );
-
-        // Reset form
-        contactForm.reset();
+          if (res.ok) {
+            status.innerHTML = "🎉 Message sent successfully!";
+            form.reset();
+          } else {
+            status.innerHTML = "❌ There was a problem. Try again later.";
+          }
+        } catch (err) {
+          status.innerHTML = "❌ Network error. Try again later.";
+        }
       });
 
       // Create animated background particles
